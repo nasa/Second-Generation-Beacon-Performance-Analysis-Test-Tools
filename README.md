@@ -119,7 +119,7 @@ C/C++/C\# assemblies (accessed via Matlab).
 
 Figure 1: Acquisition
 
-![](./myMediaFolder/media/image1.png){width="6.628472222222222in"
+![](./myMediaFolder/image1.png){width="6.628472222222222in"
 height="2.072187226596675in"}
 
 The collected samples must be read into double precision floating point
@@ -130,7 +130,7 @@ rate of 38400 chips per second.
 
 Figure 2: Processing Steps from T21
 
-![](./myMediaFolder/media/image2.png){width="5.326407480314961in"
+![](./myMediaFolder/image2.png){width="5.326407480314961in"
 height="8.063888888888888in"}
 
 T21 Mapping
@@ -197,12 +197,12 @@ normalized power spectral density is then compared to the spurious
 emission mask and the out of band power is measured and compared to the
 1% threshold as described in Section B.5.
 
-![](./myMediaFolder/media/image3.png){width="6.5in"
+![](./myMediaFolder/image3.png){width="6.5in"
 height="3.5597222222222222in"}
 
 Figure 3: Burst Energy Detection
 
-![](./myMediaFolder/media/image4.emf){width="6.5in"
+![](./myMediaFolder/image4.emf){width="6.5in"
 height="4.429861111111111in"}
 
 Figure 4: Burst Detection Threshold and Margin
@@ -229,12 +229,12 @@ processing intensive follow on processing by eliminating unnecessary
 delay samples obtained during the trigger/acquisition process, see
 Figure 6: Burst Detection.
 
-![](./myMediaFolder/media/image5.png){width="6.471014873140858in"
+![](./myMediaFolder/image5.png){width="6.471014873140858in"
 height="4.949305555555555in"}
 
 Figure 5: Frequency Discover
 
-![](./myMediaFolder/media/image6.png){width="5.854166666666667in"
+![](./myMediaFolder/image6.png){width="5.854166666666667in"
 height="5.270833333333333in"}
 
 Figure 6: Burst Detection
@@ -248,12 +248,12 @@ determine the duration of the signal.
 
 Figure 7: Rise Time
 
-![](./myMediaFolder/media/image7.png){width="4.416666666666667in"
+![](./myMediaFolder/image7.png){width="4.416666666666667in"
 height="3.9765715223097113in"}
 
 Figure 8: Fall Time
 
-![](./myMediaFolder/media/image8.png){width="4.416666666666667in"
+![](./myMediaFolder/image8.png){width="4.416666666666667in"
 height="3.9765715223097113in"}
 
 Carrier Frequency Estimation, Removal & Tracking
@@ -294,7 +294,7 @@ centers the two tones is recorded and applied to the signal to remove
 the bias. The positive peak after centering the spectrum represents the
 aggregate chip rate of the burst, see Figure 9: Center Scale.
 
-![](./myMediaFolder/media/image9.png){width="6.5in"
+![](./myMediaFolder/image9.png){width="6.5in"
 height="4.847222222222222in"}
 
 Figure 9: Center Scale
@@ -308,7 +308,7 @@ OQPSK that outputs a phase corrected burst signal. The error signal
 output is the residual carrier used to determine the short-term
 frequency stability, see Figure 10: Carrier Phase Correction.
 
-![](./myMediaFolder/media/image10.png){width="5.854166666666667in"
+![](./myMediaFolder/image10.png){width="5.854166666666667in"
 height="5.270833333333333in"}
 
 Figure 10: Carrier Phase Correction
@@ -319,7 +319,7 @@ Using the output of carrierphasecorrection, the residual carrier is
 analysed in windows across the burst to determine the short-term
 frequency stability, see Figure 11: Short Term Carrier Analysis.
 
-![](./myMediaFolder/media/image11.png){width="5.854166666666667in"
+![](./myMediaFolder/image11.png){width="5.854166666666667in"
 height="5.270833333333333in"}
 
 Figure 11: Short Term Carrier Analysis
@@ -342,7 +342,7 @@ local copy of the PN code is cross-correlated against the burst symbols
 sequentially, followed by peak search. The peak determines the location
 of the first sample of the first PN symbol, see Figure 11: Detection.
 
-![](./myMediaFolder/media/image12.png){width="5.49744094488189in"
+![](./myMediaFolder/image12.png){width="5.49744094488189in"
 height="4.9496533245844265in"}
 
 Figure 12: Detection
@@ -354,7 +354,7 @@ symbol timing at the chip level and selects the optimum sampling instant
 for each symbol. The error corrections used to correct the timing are
 recorded to be analysed.
 
-![](./myMediaFolder/media/image13.png){width="4.768115704286964in"
+![](./myMediaFolder/image13.png){width="4.768115704286964in"
 height="4.949234470691164in"}
 
 Figure 13: Symbol Synchronization
@@ -366,7 +366,7 @@ windows of symbols and calculates the evm temporally over the burst.
 
 Figure 14: EVM over Burst time
 
-![](./myMediaFolder/media/image14.png){width="4.1279713473315836in"
+![](./myMediaFolder/image14.png){width="4.1279713473315836in"
 height="4.9496533245844265in"}
 
 ### Script evalchiperror.m
@@ -376,7 +376,7 @@ error is established for the preamble and burst.
 
 Figure 15: Chip Rate error over Message
 
-![](./myMediaFolder/media/image15.png){width="5.49744094488189in"
+![](./myMediaFolder/image15.png){width="5.49744094488189in"
 height="4.9496533245844265in"}
 
 ### Script offsetcheck.m
@@ -388,7 +388,7 @@ accuracy; and the time difference is used to establish the offset.
 
 Figure 16: I vs Q Offset error
 
-![](./myMediaFolder/media/image16.png){width="5.49744094488189in"
+![](./myMediaFolder/image16.png){width="5.49744094488189in"
 height="4.9496533245844265in"}
 
 ### Script pk2pk
@@ -398,7 +398,7 @@ determined.
 
 Figure 17: Amplitude Analysis
 
-![](./myMediaFolder/media/image17.png){width="5.49744094488189in"
+![](./myMediaFolder/image17.png){width="5.49744094488189in"
 height="4.9496533245844265in"}
 
 Bit Demodulation
@@ -432,7 +432,7 @@ determines bit error positions.
 Parses the message bits to determine the message content. Creates a
 table of message break down, see Figure 18: Table Output.
 
-![](./myMediaFolder/media/image18.png){width="7.114818460192476in"
+![](./myMediaFolder/image18.png){width="7.114818460192476in"
 height="2.625in"}
 
 Figure 18: Table Output
