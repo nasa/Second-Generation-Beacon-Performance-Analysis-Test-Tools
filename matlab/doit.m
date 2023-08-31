@@ -27,7 +27,8 @@ clear;
 
 %-----------User Inputs
 pcal=53;  % power calibration setting.  If an attenuator/coupler is used, the value of the attenuation is input here.
-
+global silent; % if silent, figures will not take focus
+silent=1;
 % enter a date/time to filter the set of input waveform files (optional)
 %dx=datenum('2/21/2021');
 %enter the directory of matlab burst files from RSA.

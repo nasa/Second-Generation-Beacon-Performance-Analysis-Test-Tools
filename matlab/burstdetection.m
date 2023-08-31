@@ -19,6 +19,7 @@
 
 function t0=burstdetection(t,p,fig)
 
+p=abs(p);
 
 T=(t(2)-t(1));
 fs=fix(1/T);

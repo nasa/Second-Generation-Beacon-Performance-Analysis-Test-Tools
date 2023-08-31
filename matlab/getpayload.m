@@ -88,7 +88,7 @@ if(t0send-t0s<fsi)
 end
 
 fprintf('resample...');
-fs=153600;
+
 sps=fs/fchip;
 [a,b]=rat(fsi/fs);
 xob=resample(xb,b,a);
@@ -165,12 +165,25 @@ if(isempty(res))
 end
 pkamp(iiz) = pk;
 t0=t0+t1;
+
+fs=2*fs;
+xbb=x(round(t0*fsi):end).';
+tt=0:length(xbb)-1;
+xoc = xbb.*exp(-cfx/fsi*2*pi*1j*tt);
+sps=fs/fchip;
+[a,b]=rat(fsi/fs);
+xoc=resample(xoc,b,a);
+xoc=xoc(1:fs+2*sps);
+
 y=xoc;
-bn=0.01;
+
 fprintf('carrier phase correction...');
-for(iix=1:3)
-    [y,lam,ttx]=carrierphasecorrection(y,fs,bn,fchip,fig);
-end
+bn=0.0001;
+fprintf('carrier phase correction...');
+[y,p00,t00]=carrierphasecorrection(y,fs,bn,fchip,fig);
+p0x=p00;
+t0x=t00;
+
 saveasrsb(fig,'cpc.png');fig=fig+1;
 fprintf('complete\n');
 % 
@@ -188,7 +201,7 @@ try
 
     bin2hex([bits(51:end) ],1)
     saveasrsb(fig,'demod.png');fig=fig+1;
-catch
+catch e
     bits=-1;
     specs.error=true;
     specs.errormessage='signal could not be successfully demodulated';
@@ -199,8 +212,9 @@ fprintf('complete\n');
 %MSK: Try removing the 1/2 Tb offset before processing.
         
     for(il=1:3)
-        bn=(0.1)^il*bn0;
-        y=xoc;
+        y=xoc*exp(1j*rot);
+        bn=(0.01)^il*bn0;
+
         fig=100;
         fprintf('carrier phase correction...');
         [y,p0x,t0x]=carrierphasecorrection(y,fs,bn,fchip,fig);fig=fig+1;
@@ -215,12 +229,12 @@ fprintf('complete\n');
         fprintf('complete\n');
 
         fprintf('calculate EVM...');
-        [mx,ta,ua]=doevm(fchip,rx(~isnan(rx)) ,fig); 
+        [mx,ta,ua]=doevm(fchip,rx(~isnan(rx)) ,fig); fig=fig+1;
         fprintf('complete\n');
         
         if(ta<=ta0 && ua<ua0 && max(mx)+eps0 < mx0)
             mx0=max(mx);
-            ta0=ta;
+            ta0=0.075;
             ua0=ua;
             mxx=mx;
             rxx=rx;
@@ -248,6 +262,19 @@ if(mod(length(rxx),2) == 0)
     disp('Added a zero to rx, not divisible by 2!');
 end
 
+fprintf('demod after symbol sync\n');
+    [ si, sq ] = getPN23( fchip, mode );
+    xs = (2*si-1) + 1j* (2*sq-1);
+
+    evmb_ss=inf;
+    for(ix=1:3)
+        [~,bsyms,~,~]=dodemodds(rxx,xs,1,fig,ix-1);fig=fig+1;
+        [mx]=evmsimple(bsyms(~isnan(bsyms)));
+        if(mx<evmb_ss)
+            evmb_ss=mx;
+            rxsav=rx;
+        end
+    end
 fprintf('PN Code Demod...');
 for(ixx=1:2)
     pn=qpskdemod(rxx);
@@ -314,10 +341,15 @@ specs.pn.q=pnq; % q chips in hex
 specs.pn.posi = posi; % chip error positions
 specs.pn.posq = posq; % chip error positions
 specs.evmo=evmo;
+if(exist('evmbr'))
+    specs.evmbr = evmbr;
+    specs.snrbr=snrbr;
+
+end
 specs.evmb=evmb;
 specs.snrb=snrb;
-specs.evmb=evmbr;
-specs.snrb=snrbr;
+specs.evmb_ss = evmb_ss;
+
 specs.pkamp=pkamp;
 specs.cno=cno;
 specs.pn.invi=invi;

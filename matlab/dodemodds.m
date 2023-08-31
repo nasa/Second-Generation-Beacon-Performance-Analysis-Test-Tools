@@ -16,15 +16,25 @@
 % ///				$Id: dodemodds.m 11 2019-09-23 13:10:04Z reesebo $
 % ///            
 %
-function [bits,symbols,phii,py]=dodemodds(x,xs,spc,fig)
+function [bits,symbols,phii,py]=dodemodds(x,xs,spc,fig,nopad)
 
-clf;
+%clf;
 SAMPLES_PER_CHIP = spc;
 NUM_SYMBOLS = 150;
 NUM_PREAMBLE_SYMBOLS = 25;
 CHIPS_PER_SYMBOL = 256;
+if(exist('nopad'))
+    offset=nopad;
+    nopad=1;
+else
+    nopad=0;
+end
 
-pad=10;
+if(nopad)
+
+    start_idx=offset;
+else
+    pad=fix(10*spc/4);
 x = [ zeros(1,pad) x zeros(1,pad) ];
 
 b = [ 1 2 3 4 3 2 1 ]; b = b/sum(b);
@@ -32,6 +42,9 @@ b = [ 1 2 3 4 3 2 1 ]; b = b/sum(b);
 start_idx = round(pad*3/4+length(b)/2);
 
 x = filter( b, 1, x );
+
+end
+
 LX = length(x);
     
 % loop over 150 correlation results

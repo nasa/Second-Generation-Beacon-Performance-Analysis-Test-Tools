@@ -6,7 +6,7 @@ function h = sfigure(h)
 % Daniel Eaton, 2005
 %
 % See also figure
-silent=1;
+global silent;
 
 if(silent)
 if nargin>=1 
