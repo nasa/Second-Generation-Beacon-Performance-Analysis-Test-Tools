@@ -30,7 +30,7 @@ lwin=length(win);
 for(ix=1:length(xo)/stepsz-1)
     win=win+stepsz;
     try
-        [centerfreq, ~, CN0, CPow, ~]=specpowr_sr2(xo(win),-10000,10000,fs,pcal,0);
+        [centerfreq, ~, CN0, CPow, ~]=specpowr_sr2(xo(win)+eps,-10000,10000,fs,pcal,0);
     catch e
         %disp(e);
         break;

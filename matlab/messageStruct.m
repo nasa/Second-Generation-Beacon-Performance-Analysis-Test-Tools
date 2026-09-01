@@ -567,7 +567,7 @@ fprintf('showall                      		Show even more than show                
             front=0;
         end
         
-        sz=size(msg);
+        sz=size(msg,1);
 
         ln=length(msg);
         
