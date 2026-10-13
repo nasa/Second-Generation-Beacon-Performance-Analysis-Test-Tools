@@ -84,7 +84,17 @@ plot([t(fall(1)) t(fall(end))], [pn pn]);
 plot([t(fall(1)) t(fall(end))], [thmx thmx]);
 plot([t(fall(1)) t(fall(end))], [thmn thmn]);
 
-brk = find(p(fall)<thmn);
+brk=[];
+go=0;
+incr=thmn;
+while(~go)
+    brk = find(p(fall)<thmn);
+    if(isempty(brk))
+        thmn=thmn+incr;
+    else
+        go=1;
+    end
+end
 plot(t(fall(brk(1))), p(fall(brk(1))),'o');
 plot(t(fall(brk(1)-1)), p(fall(brk(1)-1)),'o');
 px=polyfit([p(fall(brk(1))) p(fall(brk(1)-1))],[t(fall(brk(1))) t(fall(brk(1)-1))],1);

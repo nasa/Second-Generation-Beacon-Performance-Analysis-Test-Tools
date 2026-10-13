@@ -74,7 +74,7 @@ fprintf('correct carrier phase...');
 saveasrsb(fig,'carrierphasecorrect.png');fig=fig+3;
 [dev_100,s2,maxMinusMin]=shorttermcarrier_fgblike(p0,t0,fig);fig=fig+1;
 [dev_167,o2,maxMinusMin]=shorttermcarrier(p0,t0,167.7e-3,fig);
-[dev_42,o2,maxMinusMin]=shorttermcarrier(p0,t0,41.66667e-3,fig);
+[dev_42,o2,maxMinusMin]=shorttermcarrier(p0,t0,1/24,fig);
 saveasrsb(fig,'shorttermcarrier.png');fig=fig+1;
 fprintf('complete\n');
 

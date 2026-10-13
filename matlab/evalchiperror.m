@@ -57,7 +57,7 @@ if(fig)
     text(tx(end),pv1(end),sprintf('e=%0.2f,v=%0.2f', cro(1),v(1)));
     plot(tx(idx),pv1);
 end
-idx=find(tx<0.167 & tx>0.07);
+idx=find(tx<0.167);% & tx>0.07);
 plot(tx(idx),err(idx));
 [p2,s,mu]=polyfit(tx(idx),err(idx),1);
 cro(2) = p2(1)/mu(2);
@@ -69,7 +69,7 @@ v(2)=p2_2(1)/mu(2)^2 *2; % * (tx(idx(end))-mu(1));
 plot(tx(idx),pv2);
 text(tx(idx(end)),pv2(end),sprintf('e=%0.2f,v=%0.2f', cro(2),v(2)));
 
-cro=[p1(1) p2(1)];
+%cro=[p1(1) p2(1)];
 v=[p1_2(1)*2 p2_2(1)*2];
 if(fig)
     title(sprintf('Chip Rate Error: Timing Error Detector'));

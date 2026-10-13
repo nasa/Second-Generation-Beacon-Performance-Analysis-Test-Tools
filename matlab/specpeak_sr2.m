@@ -116,7 +116,8 @@ if(plotstuff)
     plot((centerfreq)*[1 1],[noise 20*log10(abs(pk))],'y')
     plot(centerfreq,20*log10(abs(pk)),'go');
     %plot(cfr(:,1),20*log10(cfr(:,2)),'go');
-    plot([faxis(1) faxis(end)], noise*[1 1],'r');
+    %plot([faxis(1) faxis(end)], (20*log10(tryit) + noise)*[1 1],'r');
+    plot([faxis(1) faxis(end)], (10*log10(tryit) + noise)*[1 1],'r');
     hold off;
     title(sprintf('C/N0 = %f @ %f %s\n',CN0, centerfreq, str));
     xlabel('Frequency(Hz)');
