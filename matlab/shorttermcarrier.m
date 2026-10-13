@@ -18,50 +18,58 @@
 function [dev,offset,d2]=shorttermcarrier(p0,t0,dt,fig)
 
 fs=1/(t0(2)-t0(1));
-%dt=166.66667e-3;
-fx=fix(fs*dt);
+period=dt;
 
-
-p0=medfilt1(p0,fx,10);
-
-win=[1 fix(fx)]+fix(fx/2);
-
-try
-for(ix=1:length(p0))
-    dev(ix) = diff(p0(win))/dt/2/pi;
-    win=win+fx;
+if length(p0) ~= length(t0) || length(t0) < 2
+    error('p0 and t0 must be equal-length vectors containing one complete burst.');
 end
-catch
-    %dev(ix) = diff(p0([win(1) length(p0)-fix(fx/10)]))/dt;
+if any(diff(t0) <= 0) || max(abs(diff(t0)-1/fs)) > 1e-6/fs
+    error('t0 must be monotonically increasing and uniformly sampled.');
 end
 
+p0=unwrap(p0);                       % phase must be continuous for differencing
+filterSamples=max(3,round(fs*20e-3)); % 20 ms robust phase smoothing
+filterSamples=filterSamples+mod(filterSamples+1,2); % use an odd window length
+freq=zeros(1,24);
+tmeas=zeros(1,24);
+tburst=t0-t0(1);
 
-try
-win=1:5;
-for(ix=1:length(dev))
-    m=max(dev(win));
-    n=min(dev(win));
-    d2(ix)=m-n;
-    win=win+1;
+for ix=1:24
+    tstart=(ix-1)*period;
+    istart=find(tburst >= tstart,1,'first');
+    iend=find(tburst >= tstart+dt,1,'first');
+    if isempty(istart)
+        continue; %error('The input does not contain all 24 frequency measurements.');
+    end
+    if  isempty(iend)
+        iend=length(tburst);
+    end
+    elapsed=t0(iend)-t0(istart);
+    phaseWindow=p0(istart:iend);
+    %phaseWindow=movmedian(phaseWindow,filterSamples,'Endpoints','shrink');
+    freq(ix)=(phaseWindow(end)-phaseWindow(1))/elapsed/2/pi;
+    tmeas(ix)=(tburst(istart)+tburst(iend))/2;
 end
-catch
+
+d2=zeros(1,20);
+for ix=1:20
+    d2(ix)=max(freq(ix:ix+4))-min(freq(ix:ix+4));
 end
 
 sfigure(fig);clf; hold on;
-tx=(1:length(dev))*dt;
-offset=mean(dev);
-plot(tx,dev-offset,'-x');
-tx=(1:length(d2))*dt+5*dt/2;
+offset=mean(freq);
+plot(tmeas,freq-offset,'-x');
+tx=((1:20)+1)*period+tmeas(1);
 [y,idx]=max(d2);
-plot(tx(idx),y,'go');
 plot(tx,d2,'-x');
+plot(tx(idx),y,'go');
 grid on;
 xlabel('Time (s)');
 ylabel('Frequency (Hz)');
-title(sprintf('Short Frequency Variation=%0.3fppb', y/406*1e3));
+title(sprintf('Short Frequency Variation=%0.3fppb', y/406.050e6*1e9));
 legend('Frequency', 'Max-Min', 'Worst','location', 'best');
 
-dev=y/406*1e3; %ppb
+dev=y/406.050e6*1e9; %ppb
 
 sfigure(fig+900);clf;
 subplot(311);hold on;
@@ -73,6 +81,6 @@ subplot(312);
 res=p0-polyval(p,t0);
 plot(t0(rng),res(rng));title('Phase Variation vs Time (residual)');xlabel('Time (s)'); ylabel('Phase (Rads)');grid on;
 subplot(313);
-rng=fix(0.01*fs:fix(41e-3*fs):0.99*fs);
-plot(t0(rng(2:end)),diff(res(rng))/dt/2/pi,'-x');title('Freq Variation vs Time');xlabel('Time (s)'); ylabel('Frequency (Hz)'); grid on;
+rng=fix(0.01*fs:fix(period*fs):0.99*fs);
+plot(t0(rng(2:end)),diff(res(rng))./diff(t0(rng))/2/pi,'-x');title('Freq Variation vs Time');xlabel('Time (s)'); ylabel('Frequency (Hz)'); grid on;
 

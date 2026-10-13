@@ -64,7 +64,7 @@ saveasrsb(fig,'powerfreq.png');fig=fig+1;
 fprintf('complete\n');
 figpwr=fig-1;
 fprintf('detect burst energy...');
-t0=burstdetection(t,p,fig); 
+t0=burstdetection(t,real(p),fig); 
 saveasrsb(fig,'burstdetect.png');fig=fig+1;
 fprintf('complete\n');
 t0=t0-risetime;
@@ -308,7 +308,7 @@ fprintf('complete\n');
 
 [dev_100,s2,maxMinusMin]=shorttermcarrier_fgblike(p00,t00,fig);fig=fig+1;
 [dev_167,o2,maxMinusMin]=shorttermcarrier(p00,t00,167.7e-3,fig);
-[dev_42,o2,maxMinusMin]=shorttermcarrier(p00,t00,41.66667e-3,fig);
+[dev_42,o2,maxMinusMin]=shorttermcarrier(p00,t00,1/24,fig);
 saveasrsb(fig,'shorttermcarrier.png');fig=fig+1;
 fprintf('complete\n');
 

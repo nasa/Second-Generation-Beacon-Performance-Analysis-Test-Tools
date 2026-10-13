@@ -212,7 +212,7 @@ end
 oo=[oi(:); zeros(1,nSamples/2)']+1j*[zeros(1,nSamples/2)' ; oq(:)];
 oo=oo.';
 ob=obw(oo,nSamples*fchip);
-fprintf('OBW = %0.4f\n', ob);
+if(doplot)fprintf('OBW = %0.4f\n', ob);end
 ob=ob/1e3;
 if(doplot)
     sfigure(3);clf;plot(LUT_pulseup);

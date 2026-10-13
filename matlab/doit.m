@@ -34,11 +34,15 @@ silent=1;
 %enter the directory of matlab burst files from RSA.
 xdir ='Test\';
 % output matlab filename to save specs for post analysis if desired
-outfn=['usernamehere' datestr(now,'yyyy_mm_dd_hh.MM.ss') '.mat'];
+outfn_base = 'user_name_here';
 
+pad_begin=0;
 
 %-----------End User Inputs
 
+xdirres = [xdir 'results\'];
+mkdir(xdirres);
+outfn=[xdirres outfn_base datestr(now,'yyyy_mm_dd_hh.MM.ss') '.mat'];
 
 f=dir([xdir '\*.mat']);
 if(exist('dx') && ~isempty(dx))
@@ -47,6 +51,9 @@ if(exist('dx') && ~isempty(dx))
 end
 global outdir;
 
+risetime=0.04;  % padding for beginning of message.
+fchip=38400;    % ideal chip rate
+
 for(ix=1:length(f))
     fprintf('loading: %s...', f(ix).name);
     load([xdir '\' f(ix).name]); 
@@ -54,8 +61,9 @@ for(ix=1:length(f))
     x=double(Y);  % rsa saves in single, convert to double
     fprintf('complete\n');
     
-    risetime=0.04;  % padding for beginning of message.
-    fchip=38400;    % ideal chip rate
+    if(pad_begin)
+        x=[zeros(175000, 1); x];
+    end
 
     clear specs;
     
@@ -109,5 +117,6 @@ for(ix=1:length(f))
     end
 end
 % save all specs for post analysis
-save(outfile,'allspecs');
+fprintf('saving data: %s\n', outfn);
+save(outfn,'allspecs', '-v7.3');
 disp('Done!');

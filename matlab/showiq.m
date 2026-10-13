@@ -5,3 +5,7 @@ plot(t,real(x)); hold on;
 plot(t,imag(x));
 
 hold off;
+
+xlabel('Time(s)');
+ylabel('Amplitude');
+legend('I','Q')

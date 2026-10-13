@@ -29,7 +29,7 @@ if(nargin>1)
 else
     front=0;
 end
-sz=size(msg);
+sz=size(msg,1);
 
 ln=length(msg);
 
